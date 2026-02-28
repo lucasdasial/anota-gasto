@@ -20,22 +20,26 @@ export class AuthController {
     constructor(private usersService: UsersService) { }
 
     register = async (req: Request, res: Response, next: NextFunction) => {
-        const result = registerSchema.safeParse(req.body);
-        if (!result.success) {
-            return next(new ValidationError(result.error));
-        }
+        try {
+            const result = registerSchema.safeParse(req.body);
+            if (!result.success) return next(new ValidationError(result.error));
 
-        const user = await this.usersService.register(result.data).catch(next);
-        res.status(201).json(user);
+            const user = await this.usersService.register(result.data);
+            res.status(201).json(user);
+        } catch (err) {
+            next(err);
+        }
     };
 
     login = async (req: Request, res: Response, next: NextFunction) => {
-        const result = loginSchema.safeParse(req.body);
-        if (!result.success) {
-            return next(new ValidationError(result.error));
-        }
+        try {
+            const result = loginSchema.safeParse(req.body);
+            if (!result.success) return next(new ValidationError(result.error));
 
-        const data = await this.usersService.login(result.data).catch(next);
-        res.status(200).json(data);
+            const data = await this.usersService.login(result.data);
+            res.status(200).json(data);
+        } catch (err) {
+            next(err);
+        }
     };
 }

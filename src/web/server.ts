@@ -22,7 +22,7 @@ export function createServer() {
 export function startServer() {
 	const app = createServer();
 
-	app.listen(envs.port, () => {
+	return app.listen(envs.port, () => {
 		logger.info(`Running on http://localhost:${envs.port}`);
 	});
 }

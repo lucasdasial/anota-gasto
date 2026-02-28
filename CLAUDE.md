@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev          # Start server with hot reload (tsx watch)
 npm run lint         # Check lint and formatting
 npm run lint:fix     # Auto-fix lint and formatting issues
+npm run test         # Run tests once
+npm run test:watch   # Run tests in watch mode
 
 npm run db:generate  # Generate migrations from schema changes
 npm run db:migrate   # Apply pending migrations

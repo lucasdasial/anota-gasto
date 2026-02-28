@@ -3,6 +3,7 @@ import pino from "pino";
 import { envs } from "../../config/envs.ts";
 
 export const logger = pino({
+	level: envs.nodeEnv === "test" ? "silent" : "info",
 	transport:
 		envs.nodeEnv === "development" ? { target: "pino-pretty" } : undefined,
 });
