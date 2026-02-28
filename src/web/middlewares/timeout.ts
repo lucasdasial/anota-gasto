@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../errors/AppError.ts";
 
-const TIMEOUT_MS = 3000;
+const TIMEOUT_MS = 300;
 
 export function timeout(_req: Request, res: Response, next: NextFunction) {
 	const timer = setTimeout(() => {

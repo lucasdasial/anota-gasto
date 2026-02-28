@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { z } from "zod";
 import { AppError } from "../errors/AppError.ts";
 import { ValidationError } from "../errors/ValidationError.ts";
 
@@ -24,8 +24,12 @@ describe("errorHandler", () => {
 	});
 
 	it("should handle ValidationError with 422 and issues array", () => {
-		const result = z.object({ email: z.email() }).safeParse({ email: "invalid" });
-		const err = new ValidationError((result as { error: Parameters<typeof ValidationError>[0] }).error);
+		const result = z
+			.object({ email: z.email() })
+			.safeParse({ email: "invalid" });
+		const err = new ValidationError(
+			(result as { error: Parameters<typeof ValidationError>[0] }).error,
+		);
 
 		errorHandler(err, req as never, res as never, next);
 
@@ -46,7 +50,10 @@ describe("errorHandler", () => {
 
 		expect(res.status).toHaveBeenCalledWith(403);
 		expect(res.json).toHaveBeenCalledWith(
-			expect.objectContaining({ error: "Forbidden", timestamp: expect.any(String) }),
+			expect.objectContaining({
+				error: "Forbidden",
+				timestamp: expect.any(String),
+			}),
 		);
 	});
 
@@ -64,7 +71,12 @@ describe("errorHandler", () => {
 	it("should return actual error message in development mode", async () => {
 		vi.resetModules();
 		vi.doMock("../../config/envs.ts", () => ({
-			envs: { nodeEnv: "development", port: 3000, db: { url: "" }, jwt: { secret: "test" } },
+			envs: {
+				nodeEnv: "development",
+				port: 3000,
+				db: { url: "" },
+				jwt: { secret: "test" },
+			},
 		}));
 
 		const { errorHandler: devHandler } = await import("./errorHandler.ts?dev");
@@ -72,7 +84,9 @@ describe("errorHandler", () => {
 
 		devHandler(err, req as never, res as never, next);
 
-		expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ error: "Actual dev error" }));
+		expect(res.json).toHaveBeenCalledWith(
+			expect.objectContaining({ error: "Actual dev error" }),
+		);
 
 		vi.doUnmock("../../config/envs.ts");
 		vi.resetModules();
