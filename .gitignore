@@ -1,8 +1,0 @@
-/node_modules
-/coverage
-
-.env
-.vscode
-.claude
-claude.md
-CLAUDE.md
