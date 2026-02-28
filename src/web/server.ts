@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import { envs } from "../config/envs.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
@@ -8,6 +9,7 @@ import { registerApiRouter } from "./routes.ts";
 export function createServer() {
 	const app = express();
 
+	app.use(cors({ origin: envs.corsOrigin, credentials: true }));
 	app.use(express.json());
 	app.use(loggerMiddleware);
 	app.use(timeout);
