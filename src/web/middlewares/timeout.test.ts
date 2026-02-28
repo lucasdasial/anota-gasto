@@ -1,10 +1,11 @@
+import type { NextFunction } from "express";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { timeout } from "./timeout.ts";
 
 describe("timeout", () => {
 	let req: object;
 	let res: { on: ReturnType<typeof vi.fn> };
-	let next: ReturnType<typeof vi.fn>;
+	let next: NextFunction;
 
 	beforeEach(() => {
 		vi.useFakeTimers();

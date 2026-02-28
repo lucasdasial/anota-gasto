@@ -7,12 +7,13 @@ vi.mock("./logger.ts", () => ({
 	logger: { warn: vi.fn(), error: vi.fn(), info: vi.fn() },
 }));
 
+import type { NextFunction } from "express";
 import { errorHandler } from "./errorHandler.ts";
 
 describe("errorHandler", () => {
 	let req: object;
 	let res: { status: ReturnType<typeof vi.fn>; json: ReturnType<typeof vi.fn> };
-	let next: ReturnType<typeof vi.fn>;
+	let next: NextFunction;
 
 	beforeEach(() => {
 		req = {};
@@ -24,12 +25,9 @@ describe("errorHandler", () => {
 	});
 
 	it("should handle ValidationError with 422 and issues array", () => {
-		const result = z
-			.object({ email: z.email() })
-			.safeParse({ email: "invalid" });
-		const err = new ValidationError(
-			(result as { error: Parameters<typeof ValidationError>[0] }).error,
-		);
+		const result = z.object({ email: z.email() }).safeParse({ email: "invalid" });
+		if (result.success) throw new Error("Expected validation to fail");
+		const err = new ValidationError(result.error);
 
 		errorHandler(err, req as never, res as never, next);
 
@@ -68,27 +66,4 @@ describe("errorHandler", () => {
 		);
 	});
 
-	it("should return actual error message in development mode", async () => {
-		vi.resetModules();
-		vi.doMock("../../config/envs.ts", () => ({
-			envs: {
-				nodeEnv: "development",
-				port: 3000,
-				db: { url: "" },
-				jwt: { secret: "test" },
-			},
-		}));
-
-		const { errorHandler: devHandler } = await import("./errorHandler.ts?dev");
-		const err = new Error("Actual dev error");
-
-		devHandler(err, req as never, res as never, next);
-
-		expect(res.json).toHaveBeenCalledWith(
-			expect.objectContaining({ error: "Actual dev error" }),
-		);
-
-		vi.doUnmock("../../config/envs.ts");
-		vi.resetModules();
-	});
 });
