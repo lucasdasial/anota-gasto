@@ -16,5 +16,16 @@ defmodule Anotagasto.Accounts.User do
     user
     |> cast(attrs, [:name, :password, :phone_number])
     |> validate_required([:name, :password, :phone_number])
+    |> unique_constraint(:phone_number)
+    |> hash_password()
+  end
+
+  defp hash_password(%Ecto.Changeset{} = changeset) do
+    password_hashed =
+      changeset
+      |> get_field(:password)
+      |> Bcrypt.hash_pwd_salt()
+
+    put_change(changeset, :password, password_hashed)
   end
 end
