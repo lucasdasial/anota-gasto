@@ -3,13 +3,17 @@ defmodule AnotagastoWeb.ExpenseController do
 
   alias Anotagasto.Expenses
   alias Anotagasto.Expenses.Expense
+  alias Anotagasto.Pagination
 
   action_fallback AnotagastoWeb.FallbackController
 
-  def index(conn, _params) do
+  def index(conn, params) do
     user = conn.assigns.user
-    expenses = Expenses.list_expenses_by_user(user.id)
-    render(conn, :index, expenses: expenses)
+
+    with {:ok, pagination} <- Pagination.build(params) do
+      result = Expenses.list_expenses_by_user(user.id, pagination)
+      render(conn, :index, result)
+    end
   end
 
   def create(conn, params) do

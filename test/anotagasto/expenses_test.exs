@@ -21,7 +21,12 @@ defmodule Anotagasto.ExpensesTest do
     end
 
     test "create_expense/1 with valid data creates a expense" do
-      valid_attrs = %{value: 42, description: "some description", category: :food, user_id: "7488a646-e31f-11e4-aace-600308960662"}
+      valid_attrs = %{
+        value: 42,
+        description: "some description",
+        category: :food,
+        user_id: "7488a646-e31f-11e4-aace-600308960662"
+      }
 
       assert {:ok, %Expense{} = expense} = Expenses.create_expense(valid_attrs)
       assert expense.value == 42
@@ -36,7 +41,13 @@ defmodule Anotagasto.ExpensesTest do
 
     test "update_expense/2 with valid data updates the expense" do
       expense = expense_fixture()
-      update_attrs = %{value: 43, description: "some updated description", category: :eat_out, user_id: "7488a646-e31f-11e4-aace-600308960668"}
+
+      update_attrs = %{
+        value: 43,
+        description: "some updated description",
+        category: :eat_out,
+        user_id: "7488a646-e31f-11e4-aace-600308960668"
+      }
 
       assert {:ok, %Expense{} = expense} = Expenses.update_expense(expense, update_attrs)
       assert expense.value == 43

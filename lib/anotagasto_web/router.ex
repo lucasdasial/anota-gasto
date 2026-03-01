@@ -37,7 +37,7 @@ defmodule AnotagastoWeb.Router do
     scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
-      live_dashboard "/dashboard", metrics: AnotagastoWeb.Telemetry
+      live_dashboard "/dashboard", metrics: AnotagastoWeb.Telemetry, ecto_repos: [Anotagasto.Repo]
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end

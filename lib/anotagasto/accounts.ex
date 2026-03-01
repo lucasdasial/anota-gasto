@@ -4,12 +4,13 @@ defmodule Anotagasto.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias Anotagasto.Pagination
   alias Anotagasto.Repo
 
   alias Anotagasto.Accounts.User
 
-  def list_users do
-    Repo.all(User)
+  def list_users(%Pagination{} = pagination) do
+    Repo.paginate(User, pagination)
   end
 
   def get_user!(id), do: Repo.get!(User, id)

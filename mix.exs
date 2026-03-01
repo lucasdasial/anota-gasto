@@ -54,7 +54,8 @@ defmodule Anotagasto.MixProject do
       {:bandit, "~> 1.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:bcrypt_elixir, "~> 3.0"},
-      {:guardian, "~> 2.3"}
+      {:guardian, "~> 2.3"},
+      {:ecto_psql_extras, "~> 0.6"}
     ]
   end
 

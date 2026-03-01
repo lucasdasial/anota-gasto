@@ -1,14 +1,18 @@
 defmodule AnotagastoWeb.UserController do
   use AnotagastoWeb, :controller
 
+  alias Anotagasto.Pagination
   alias Anotagasto.Accounts
   alias Anotagasto.Accounts.User
 
   action_fallback AnotagastoWeb.FallbackController
 
-  def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, :index, users: users)
+  def index(conn, params) do
+    with {:ok, pagination} <- Pagination.build(params) do
+      users = Accounts.list_users(pagination)
+
+      render(conn, :index, users)
+    end
   end
 
   def create(conn, user_params) do

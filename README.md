@@ -6,7 +6,7 @@
 
 ## English
 
-Ever reached the end of the month wondering where all your money went? Anotagasto solves that.
+Ever reached the end of the month wondering where all your money went? Anotagasto("ExpensesRecorder") solves that.
 
 The app was built for two simple actions:
 
