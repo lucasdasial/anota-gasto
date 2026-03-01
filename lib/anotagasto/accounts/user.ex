@@ -14,6 +14,8 @@ defmodule Anotagasto.Accounts.User do
     timestamps(type: :utc_datetime)
   end
 
+  # TODO: sanitizar o telefone e nome
+
   def changeset(attrs), do: changeset(%__MODULE__{}, attrs)
   @doc false
   def changeset(user, attrs) do
