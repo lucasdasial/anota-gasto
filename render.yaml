@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: anotagasto-api
+    runtime: docker
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: APP_SECRET
+        generateValue: true
+      - key: PHX_SERVER
+        value: true
+      - key: PHX_HOST
+        sync: false
