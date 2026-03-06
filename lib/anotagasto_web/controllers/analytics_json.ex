@@ -5,7 +5,7 @@ defmodule AnotagastoWeb.AnalyticsJSON do
         month: month,
         days:
           Enum.map(days, fn entry ->
-            %{date: entry.date, total: entry.total, count: entry.count}
+            %{date: entry.date, total: to_int(entry.total), count: entry.count}
           end)
       }
     }
@@ -15,13 +15,17 @@ defmodule AnotagastoWeb.AnalyticsJSON do
     %{
       data: %{
         month: month,
-        total: total,
+        total: to_int(total),
         count: count,
         by_category:
           Enum.map(by_category, fn entry ->
-            %{category: entry.category, total: entry.total, count: entry.count}
+            %{category: entry.category, total: to_int(entry.total), count: entry.count}
           end)
       }
     }
   end
+
+  defp to_int(nil), do: 0
+  defp to_int(%Decimal{} = d), do: Decimal.to_integer(d)
+  defp to_int(n) when is_integer(n), do: n
 end

@@ -47,7 +47,7 @@ config :anotagasto, AnotagastoWeb.Gettext, default_locale: "pt_BR"
 
 config :anotagasto, Anotagasto.Auth.Guardian,
   issuer: "anotagasto",
-  ttl: {1, :day}
+  ttl: {30, :days}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
