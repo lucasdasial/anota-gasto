@@ -73,6 +73,28 @@ references(:users, type: :binary_id, on_delete: :delete_all)
 
 Dev uses `.env` (gitignored) with `export APP_SECRET=...`. The app raises at startup if `APP_SECRET` is missing (`Anotagasto.Auth.Guardian.secret_available?/0`).
 
+## Production (VPS)
+
+The API is deployed on a VPS (user: `lucas`) at `api.anotagasto.lucasdasial.com`.
+
+- Project cloned at `~/www/anotagasto`
+- Env file at `/home/lucas/anotagasto.env` (never committed)
+- PostgreSQL runs directly on the host (not in Docker)
+- `docker-compose.prod.yml` manages the API container with `network_mode: host`
+
+**Deploy workflow:**
+```bash
+git pull
+docker build -t anotagasto-api:latest .
+docker compose -f docker-compose.prod.yml up -d --force-recreate
+```
+
+**Useful commands on VPS:**
+```bash
+docker logs -f anotagasto-api   # follow logs
+docker ps                       # check health status
+```
+
 ## Workflow
 
 - Before implementing any feature, **always plan first** and ask for approval before writing code
